@@ -1,0 +1,7 @@
+.*.sw[a-z]
+~*
+# overlay / void-packages
+_packages
+_build
+_work
+_diff

@@ -1,0 +1,25 @@
+#!/bin/sh
+
+NOTE() {
+  echo '#' "$@" 1>&2
+}
+
+cd "`dirname "$0"`"
+src="`pwd`"
+
+NOTE 'Fetching void-packages into _packages'
+if [ -d _packages ]; then
+  cd _packages
+  git pull --ff-only origin master
+  cd ..
+else
+  git clone https://github.com/voidlinux/void-packages.git _packages
+fi
+
+NOTE 'Creating overlay dirs'
+mkdir -p build _diff _work
+
+NOTE 'Mounting overlay (sudo)...' 1>&2
+sudo mount -t overlay overlay \
+  -olowerdir=$src/_packages:$src/pkg,upperdir=$src/_diff,workdir=$src/_work \
+  $src/build

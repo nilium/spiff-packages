@@ -1,0 +1,12 @@
+# Template file for 'regen'
+pkgname=regen
+version=0.1.0
+revision=1
+build_style=go
+go_import_path=go.spiff.io/regen
+short_desc="Tool to generate random strings from Go/RE2 regular expressions"
+maintainer="Noel Cower <ncower@gmail.com>"
+license="BSD-2-Clause"
+homepage="https://github.com/nilium/regen"
+distfiles="https://github.com/nilium/regen/archive/v${version}.tar.gz"
+checksum="74d84867cb7b8faa9d428bd82e0a5103efaf1a3878eeee16317e1f631ea44b37"
