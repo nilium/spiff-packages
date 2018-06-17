@@ -13,7 +13,7 @@ if [ -d _packages ]; then
   git pull --ff-only origin master
   cd ..
 else
-  git clone https://github.com/voidlinux/void-packages.git _packages
+  git clone https://github.com/void-linux/void-packages.git _packages
 fi
 
 NOTE 'Creating overlay dirs'
