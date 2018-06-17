@@ -1,6 +1,6 @@
 # Template file for 'rebar3'
 pkgname=rebar3
-version=3.5.2
+version=3.5.3
 revision=1
 build_style=fetch
 depends=erlang
@@ -8,7 +8,7 @@ short_desc="Erlang build tool to compile, test, and release applications"
 maintainer="Noel Cower <ncower@gmail.com>"
 license="Apache-2.0"
 homepage="https://www.rebar3.org/"
-checksum="@b8bd0d289edfbfe86889c8511bffc38464cf6ac73cd3751a765ec369b3a841a8"
+checksum="@54d155061259612c5d2643922062fcc9e017809e356ad301c1af67bd866be2e6"
 
 do_fetch() {
 	$XBPS_FETCH_CMD "https://github.com/erlang/rebar3/releases/download/${version}/rebar3"
