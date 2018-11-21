@@ -8,11 +8,11 @@ cd "`dirname "$0"`"
 src="`pwd`"
 
 NOTE 'Fetching void-packages into _packages'
-if [ -d _packages ]; then
+if [ -d _packages ] && [ "${pull:-1}" = 1 ]; then
   cd _packages
   git pull --ff-only origin master
   cd ..
-else
+elif ! [ -d _packages ]; then
   git clone https://github.com/void-linux/void-packages.git _packages
 fi
 
