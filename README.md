@@ -8,7 +8,29 @@ this). So, this is currently a manual thing.
 Steps to Build
 ---
 
-1. Run `create-overlay` to create the `build` overlay.
-2. From the `build` directory, use xbps-src as usual to build packages.
+1. Prepare the void-packages repository:
 
-I'll eventually get this to work a little more cleanly, but for now this works.
+    ```
+    $ ./ws init
+    ```
+
+2. Install the bootstrap packages (you can also do this normally from the
+   void-packages directory):
+
+    ```
+    $ ./ws binary-bootstrap
+    ```
+
+3. From then, you can pass any command to `ws` to create package bindings and
+   run xbps-src with a given command. For example, to run `xbps-src pkg`:
+
+    ```
+    $ ./ws pkg retrap
+    ```
+
+To run an arbitrary program in the void-packages workspace with bindings in
+place, you can use `ws run`:
+
+    ```
+    $ ./ws run xgensum srcpkgs/template/retrap
+    ```
