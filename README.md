@@ -28,9 +28,23 @@ Steps to Build
     $ ./ws pkg retrap
     ```
 
+Running Other Programs
+---
+
 To run an arbitrary program in the void-packages workspace with bindings in
 place, you can use `ws run`:
 
     ```
     $ ./ws run xgensum srcpkgs/template/retrap
     ```
+
+Building All Packages
+---
+
+To run a command against all known packages, you can use the text `{pkg}` in
+a command line in place of a package name and ws will run the command for all
+packages it identifies.
+
+   ```
+   $ ./ws pkg {pkg}
+   ```
