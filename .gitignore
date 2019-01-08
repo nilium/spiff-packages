@@ -1,7 +1,8 @@
 .*.sw[a-z]
 ~*
-# overlay / void-packages
+# overlay / void-packages / workspace
 /_packages
 /build
 /_work
 /_diff
+/void-packages
