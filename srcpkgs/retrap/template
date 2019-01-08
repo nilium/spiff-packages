@@ -1,6 +1,6 @@
 # Template file for 'retrap'
 pkgname=retrap
-version=1.0.0
+version=1.0.1
 revision=1
 build_style=go
 makedepends=git
@@ -11,4 +11,4 @@ maintainer="Noel Cower <ncower@gmail.com>"
 license="BSD-2-Clause"
 homepage="https://github.com/nilium/retrap"
 distfiles="https://github.com/nilium/retrap/archive/v${version}.tar.gz"
-checksum="3fb96f41141a6e75309f003ac86a59962e3ea75e6b78ef1b081f67967c6d4572"
+checksum="49e9362ba998eebdbefd15e7cf4da8d7bc3345f48050c75352e51e164f60b0bf"
