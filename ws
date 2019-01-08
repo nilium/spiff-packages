@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 NOTE() {
   echo '#' "$@" 1>&2
@@ -64,21 +64,37 @@ ws_cmd_init() {
   fi
 }
 
+all_pkg() {
+  find "${ws_pkgnew}/srcpkgs" -mindepth 2 -maxdepth 2 -type f -name template |
+    fex /-2 |
+    sort
+}
 
 each_pkg() {
-  find "$ws_exesrc/srcpkgs" -mindepth 2 -maxdepth 2 -type f -name template |
-    fex /-2 |
-    xargs -L1 -I{pkg} "$@"
+   all_pkg | xargs -L1 -I{pkg} "$@"
 }
 
 create_binds() {
-  each_pkg mkdir "$ws_pkgsrc/srcpkgs/{pkg}"
-  each_pkg bindfs --no-allow-other "$ws_exesrc/srcpkgs/{pkg}" "$ws_pkgsrc/srcpkgs/{pkg}"
+  if [ -d "${ws_dir}" ]; then
+    if [ ! -e "${ws_dir}" ] && ! rm -d "$ws_dir"; then
+      ERR 'Workspace already exists but is not empty and is not recognized'
+    fi
+    return 0
+  fi
+  mkdir "$ws_dir"
+  if ! mergerfs "${ws_pkgsrc}:${ws_pkgnew}" "$ws_dir"; then
+    rm -d "$ws_dir"
+    ERR 'Unable to create workspace'
+  fi
 }
 
 clean_binds() {
-  each_pkg fusermount -u "$ws_pkgsrc/srcpkgs/{pkg}"
-  each_pkg rm -r "$ws_pkgsrc/srcpkgs/{pkg}"
+  if [ ! -d .work ]; then
+    return 0
+  fi
+  fusermount -u .work ||
+    ERR 'Unable to unmount workspace'
+  rm -d .work
 }
 
 ws_usage_src() {
@@ -91,6 +107,27 @@ EOF
 
 ws_cmd_src() {
   ws_cmd_run ./xbps-src "$@"
+}
+
+
+ws_usage_binds() {
+  cat 1>&2 <<EOF
+Usage: $* {create|rm}
+
+Create, or remove, the .work directory.
+EOF
+}
+
+ws_cmd_binds() {
+  cmd="$1"
+  case "$cmd" in
+  create|clean)
+    shift
+    noargs $#
+    "${cmd}_binds";;
+  *)
+    ERR "Unexpected command: $1";;
+  esac
 }
 
 on_all_packages() {
@@ -107,13 +144,13 @@ EOF
 
 ws_cmd_run() {
   create_binds
+  trap 'clean_binds' EXIT
   if on_all_packages "$@"; then
-    (cd "$ws_pkgsrc" && each_pkg "$@")
+    (cd "$ws_dir" && each_pkg "$@")
   else
-    (cd "$ws_pkgsrc" && "$@")
+    (cd "$ws_dir" && "$@")
   fi
   local ec=$?
-  clean_binds
   return $ec
 }
 
@@ -139,6 +176,7 @@ Commands
   init       Initialize workspace.
   src        Run xbps-src with package templates bind-mounted.
   run        Run an arbitrary command in the void-packages workspace.
+  binds      Create or clean package bindings.
 
 Any unrecognized command is treated as an xbps-src command and is
 equivalent to running 'src' with the same arguments.
@@ -161,15 +199,16 @@ main() {
 
   if [ -z "$(command -v "ws_cmd_${mode}" 2>/dev/null)" ]; then
     ws_cmd_run ./xbps-src "${mode}" "$@"
-    exit $?
+  else
+    check_help "$mode" "$1"
+    "ws_cmd_${mode}" "$@"
   fi
-
-  check_help "$mode" "$1"
-  "ws_cmd_${mode}" "$@"
 }
 
 cd "$(dirname "$0")"
 export ws_exesrc="$(pwd)"
+export ws_dir="${ws_exesrc}/.work"
+export ws_pkgnew="${ws_exesrc}/root"
 export ws_pkgsrc="${ws_exesrc}/void-packages"
 
 main "$@"

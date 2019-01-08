@@ -1,7 +1,7 @@
 # Template file for 'mtar'
 pkgname=mtar
 version=1.0.0
-revision=1
+revision=2
 build_style=go
 go_import_path=go.spiff.io/mtar
 short_desc="tar archive tool to add files with arbitrary paths"
