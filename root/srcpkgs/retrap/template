@@ -1,9 +1,8 @@
 # Template file for 'retrap'
 pkgname=retrap
 version=1.0.1
-revision=1
+revision=2
 build_style=go
-makedepends=git
 go_import_path=go.spiff.io/retrap
 go_build_tags=linux
 short_desc="Remap signals and forward them to a child process"
@@ -12,3 +11,7 @@ license="BSD-2-Clause"
 homepage="https://github.com/nilium/retrap"
 distfiles="https://github.com/nilium/retrap/archive/v${version}.tar.gz"
 checksum="49e9362ba998eebdbefd15e7cf4da8d7bc3345f48050c75352e51e164f60b0bf"
+
+post_install() {
+	vlicense LICENSE
+}
