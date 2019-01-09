@@ -1,7 +1,7 @@
 # Template file for 'mtar'
 pkgname=mtar
 version=1.0.0
-revision=2
+revision=3
 build_style=go
 go_import_path=go.spiff.io/mtar
 short_desc="tar archive tool to add files with arbitrary paths"
@@ -10,3 +10,7 @@ license="BSD-2-Clause"
 homepage="https://github.com/nilium/mtar"
 distfiles="https://github.com/nilium/mtar/archive/v${version}.tar.gz"
 checksum="608d38300529ba86197d95530920916694e3f692ae1be226bdb0839f82875a06"
+
+post_install() {
+	vlicense LICENSE.txt
+}
