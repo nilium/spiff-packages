@@ -1,7 +1,7 @@
 # Template file for 'jsondir'
 pkgname=jsondir
 version=1.0.0
-revision=2
+revision=3
 build_style=go
 go_import_path=go.spiff.io/jsondir
 short_desc="Tool to map directory structures to JSON"
@@ -10,3 +10,7 @@ license="BSD-2-Clause"
 homepage="https://github.com/nilium/jsondir"
 distfiles="https://github.com/nilium/jsondir/archive/v${version}.tar.gz"
 checksum="fc4e1ff77d3e4f03c0b746ec7150d6516bc60670afc947948bbb21ff33cc6296"
+
+post_install() {
+	vlicense LICENSE.txt
+}
