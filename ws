@@ -82,7 +82,7 @@ create_binds() {
     return 0
   fi
   mkdir "$ws_dir"
-  if ! mergerfs "${ws_pkgsrc}:${ws_pkgnew}" "$ws_dir"; then
+  if ! mergerfs "${ws_pkgnew}:${ws_pkgsrc}" "$ws_dir"; then
     rm -d "$ws_dir"
     ERR 'Unable to create workspace'
   fi
