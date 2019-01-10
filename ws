@@ -131,7 +131,7 @@ ws_cmd_binds() {
 }
 
 on_all_packages() {
-  echo "$@" | fgrep '{pkg}'
+  echo "$@" | fgrep -q '{pkg}'
 }
 
 ws_usage_run() {
