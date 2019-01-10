@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 NOTE() {
   echo '#' "$@" 1>&2
@@ -49,19 +49,43 @@ If run again, this will fetch and update the void-packages clone.
 EOF
 }
 
+fetch_repo() {
+  local upstream=master
+  local pull=1
+  local opt=
+  while getopts ":u:P:" opt; do
+    case "${opt}" in
+    u) upstream="${OPTARG}";;
+    P) pull=0;;
+    *) ERR "fetch_repo: unrecognized argument: ${opt}";;
+    esac
+  done
+  shift $((OPTIND-1))
+  if [ $# -lt 1 ]; then
+    ERR 'fetch_repo: no repo given'
+  elif [ $# -gt 2 ]; then
+    ERR 'fetch_repo: too many arguments'
+  fi
+  local repo="$1"
+  local dir="${2:-$(basename "${repo}" .git)}"
+  if [ -d "$dir" ] && [ "${pull}" = 1 ]; then
+    (
+    cd "$dir"
+    git fetch origin "$upstream"
+    git checkout --force "$upstream"
+    git reset --hard "origin/${upstream}"
+    )
+  elif ! [ -d "$dir" ]; then
+    git clone --branch="$upstream" "$repo" "$dir"
+  fi
+}
+
 ws_cmd_init() {
   noargs $#
   NOTE 'Fetching void-packages'
-  if [ -d void-packages ] && [ "${pull:-1}" = 1 ]; then
-    (
-    cd "$ws_pkgsrc"
-    git fetch origin master
-    git checkout --force master
-    git reset --hard origin/master
-    )
-  elif ! [ -d "$ws_pkgsrc" ]; then
-    git clone https://github.com/void-linux/void-packages.git "$ws_pkgsrc"
-  fi
+  fetch_repo 'https://github.com/void-linux/void-packages.git' "$ws_pkgsrc"
+  NOTE 'Fetching xtools'
+  fetch_repo 'https://github.com/chneukirchen/xtools.git' "$ws_xtsrc"
 }
 
 all_pkg() {
@@ -71,7 +95,7 @@ all_pkg() {
 }
 
 each_pkg() {
-   all_pkg | xargs -L1 -I{pkg} "$@"
+   all_pkg | xargs -t -L1 -I{pkg} "$@"
 }
 
 create_binds() {
@@ -210,5 +234,8 @@ export ws_exesrc="$(pwd)"
 export ws_dir="${ws_exesrc}/.work"
 export ws_pkgnew="${ws_exesrc}/root"
 export ws_pkgsrc="${ws_exesrc}/void-packages"
+export ws_xtsrc="${ws_exesrc}/xtools"
+
+export PATH="${ws_xtsrc}:$PATH"
 
 main "$@"
