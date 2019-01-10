@@ -178,6 +178,26 @@ ws_cmd_run() {
   return $ec
 }
 
+ws_usage_sh() {
+  cat 1>&2 <<EOF
+Usage: $* <cmd>
+
+Run <cmd> as a shell script from the void-packages workspace.
+EOF
+}
+
+ws_cmd_sh() {
+  create_binds
+  trap 'clean_binds' EXIT
+  if on_all_packages "$@"; then
+    (cd "$ws_dir" && each_pkg sh -c "$*")
+  else
+    (cd "$ws_dir" && sh -c "$*")
+  fi
+  local ec=$?
+  return $ec
+}
+
 # check_help CMD ARG1
 #
 # Checks if ARG1 is -h, -help, or --help and prints CMD's usage if it
@@ -200,6 +220,7 @@ Commands
   init       Initialize workspace.
   src        Run xbps-src with package templates bind-mounted.
   run        Run an arbitrary command in the void-packages workspace.
+  sh         Run an shell string in the void-packages workspace.
   binds      Create or clean package bindings.
 
 Any unrecognized command is treated as an xbps-src command and is
