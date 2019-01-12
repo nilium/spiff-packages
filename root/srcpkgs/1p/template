@@ -1,0 +1,15 @@
+# Template file for '1p'
+pkgname=1p
+version=0.2.1
+revision=1
+depends="jq fzf fex"
+short_desc="Fuzzy-finder for 1Password items"
+maintainer="Noel Cower <ncower@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://github.com/nilium/1p"
+distfiles="https://github.com/nilium/1p/archive/v${version}.tar.gz"
+checksum=0dbd024020f878f468c85acd9ea7e2f1addbaf7d8bfb16ec9fdf9aed24da38d1
+
+do_install() {
+	vbin 1p
+}
