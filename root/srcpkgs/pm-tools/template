@@ -1,0 +1,23 @@
+# Template file for 'pm-tools'
+pkgname=pm-tools
+_commit=6062c776359e070b44124217b510db52fdfe0e36
+version=0.6062c77
+revision=1
+wrksrc=pm-tools-${_commit}
+build_style=gnu-makefile
+hostmakedepends="libcap-progs"
+short_desc="Small Linux tools to manage processes"
+maintainer="Noel Cower <ncower@gmail.com>"
+license="Unlicense"
+homepage="https://github.com/izabera/pm-tools"
+distfiles="https://github.com/izabera/pm-tools/archive/${_commit}.tar.gz"
+checksum=e3582d5e5ed07840b31aa8869a9ca7dd25951e4e97f20dadb76123038155b0a6
+patch_args="-Np1"
+
+do_install() {
+	vbin waiter
+	vbin nochildren
+	vbin nosudo
+	vbin ptracer
+	vbin subreaper
+}

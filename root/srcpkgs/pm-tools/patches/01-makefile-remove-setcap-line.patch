@@ -1,0 +1,24 @@
+From aa71eab721bcf9cff9bb3e1369742bd1a60599bc Mon Sep 17 00:00:00 2001
+From: Noel Cower <ncower@gmail.com>
+Date: Wed, 30 Jan 2019 10:28:38 -0800
+Subject: [PATCH] makefile: Remove setcap line
+
+---
+ Makefile | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 1aaa15f..fb0aaa0 100644
+--- a/Makefile
++++ b/Makefile
+@@ -5,7 +5,6 @@ all: waiter nosudo nochildren subreaper ptracer
+ waiter: waiter.c
+ 	uname -rs | awk -F'[ .]' '$$1 != "Linux" || $$2 < 3 || ($$2 == 3 && $$3 < 4) { exit 1 }'
+ 	$(CC) $(CFLAGS) $(LDFLAGS) waiter.c -o waiter
+-	sudo setcap cap_sys_ptrace+ep waiter
+ 
+ nosudo: nosudo.c
+ 	$(CC) $(CFLAGS) $(LDFLAGS) nosudo.c -o nosudo
+-- 
+2.20.1
+
