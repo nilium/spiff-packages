@@ -1,0 +1,24 @@
+# Template file for 'bazel'
+pkgname=bazel
+version=0.22.0
+revision=1
+create_wrksrc=yes
+hostmakedepends="gcc openjdk zip unzip python3"
+depends="virtual?java-runtime"
+short_desc="Multi-language and extensible build system"
+maintainer="Noel Cower <ncower@gmail.com>"
+license="Apache-2"
+homepage="https://bazel.build/"
+distfiles="https://github.com/bazelbuild/bazel/releases/download/${version}/bazel-${version}-dist.zip"
+checksum="6860a226c8123770b122189636fb0c156c6e5c9027b5b245ac3b2315b7b55641"
+nostrip=yes
+
+do_build() {
+	export JAVA_HOME=/usr/lib/jvm/openjdk
+	export EXTRA_BAZEL_ARGS="--host_javabase=@local_jdk//:jdk"
+	./compile.sh
+}
+
+do_install() {
+	vbin output/bazel
+}
