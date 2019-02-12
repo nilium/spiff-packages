@@ -1,0 +1,12 @@
+# Template file for 'gnatsd'
+pkgname=gnatsd
+version=1.4.1
+revision=1
+build_style=go
+go_import_path=github.com/nats-io/gnatsd
+short_desc="NATS message queue server"
+maintainer="Noel Cower <ncower@gmail.com>"
+license="Apache-2.0"
+homepage="https://nats.io"
+distfiles="https://github.com/nats-io/gnatsd/archive/v${version}.tar.gz"
+checksum="1d319ec9466d5b4d56b8dc0c059bbb50942a8e988c3dcc155271476c3ae629a1"
