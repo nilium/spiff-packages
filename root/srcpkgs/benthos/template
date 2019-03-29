@@ -1,0 +1,30 @@
+# Template file for 'benthos'
+pkgname=benthos
+version=1.10.3
+revision=2
+build_style=go
+go_import_path=github.com/Jeffail/benthos
+go_package="$go_import_path/cmd/benthos"
+hostmakedepends="make git"
+short_desc="Stream processor for dull stuff"
+maintainer="Noel Cower <ncower@gmail.com>"
+license="MIT"
+homepage="https://github.com/Jeffail/benthos"
+distfiles="${homepage}/archive/v${version}.tar.gz"
+checksum="0fdab0fa3bdefc14bbd0bf73493e6129b5415227073312f86b88b472b2bce428"
+
+post_build() {
+	make docs
+}
+
+post_install() {
+	vlicense LICENSE
+	for file in $(find config -type f)
+	do
+		vsconf "$file" "${file#config/}"
+	done
+	for file in $(find docs -type f -a -not -name CNAME)
+	do
+		vdoc "$file" "${file#docs/}"
+	done
+}
