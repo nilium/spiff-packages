@@ -1,0 +1,16 @@
+# Template file for 'urlcode'
+pkgname=urlcode
+version=0.1.0
+revision=1
+build_style=go
+go_import_path=go.spiff.io/${pkgname}
+short_desc="Escape and unescape URL query and path strings"
+maintainer="Noel Cower <ncower@gmail.com>"
+license="ISC"
+homepage="https://github.com/nilium/urlcode"
+distfiles="${homepage}/archive/v${version}.tar.gz"
+checksum="cb38826e3bd6461d509826bbfad533737f8f3f227c6d12d8be036f65c15cc08f"
+
+post_install() {
+	vlicense COPYING
+}
