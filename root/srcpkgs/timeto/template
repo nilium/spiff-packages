@@ -1,7 +1,7 @@
 # Template file for 'timeto'
 pkgname=timeto
-version=1.0.0
-revision=3
+version=1.1.0
+revision=1
 build_style=go
 go_import_path=go.spiff.io/timeto
 short_desc="Tool to print the duration of time between the current and future times"
@@ -9,7 +9,7 @@ maintainer="Noel Cower <ncower@gmail.com>"
 license="BSD-2-Clause"
 homepage="https://github.com/nilium/timeto"
 distfiles="https://github.com/nilium/timeto/archive/v${version}.tar.gz"
-checksum="df8a2fd9cf74737907a358b976e10b2a7e67a31f92a6364ce3e4113135653d7d"
+checksum="4dfd4f064355cf8cf0acabaf5d8be7adfe79ac0bf0218692e2c1e5883bd455b1"
 
 post_install() {
 	vlicense LICENSE
