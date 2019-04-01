@@ -1,0 +1,36 @@
+#!/bin/bash
+set -e
+
+user="${1:-$(id -un)}"
+home="$(getent passwd "$user" | cut -d: -f6)"
+group="$(id -gn "$user")"
+if [ -z "$home" ]; then
+  echo "User does not exist: $user" >&2
+  exit 1
+elif [ -z "$group" ]; then
+  echo "User primary group unknown: $user" >&2
+  exit 1
+fi
+
+sshdir="$home/.ssh"
+tmpkeys="$(mktemp)"
+trap 'rm -f "$tmpkeys"' EXIT
+url='http://169.254.169.254/metadata/v1/public-keys'
+if ! timeout xbps-uhelper fetch "${url}>${tmpkeys}"; then
+  echo "Cannot fetch public keys" >&2
+  exit 1
+fi
+
+if [ ! -d "$sshdir" ]; then
+  if ! install -m700 -o "$user" -g "$group" -d "$sshdir"; then
+    echo "Cannot create user's (${user}) .ssh directory" >&2
+    exit 1
+  fi
+fi
+
+if diff -q -N "${sshdir}/digitalocean_keys" "$tmpkeys" >/dev/null; then
+  # No diff
+  exit 2
+fi
+
+install -m644 -o "$user" -g "$group" "$tmpkeys" "${sshdir}/digitalocean_keys"

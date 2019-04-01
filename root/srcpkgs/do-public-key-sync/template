@@ -1,0 +1,15 @@
+# Template file for 'do-public-key-sync'
+pkgname=do-public-key-sync
+version=0.1.0
+revision=1
+build_style=meta
+depends="snooze coreutils diffutils"
+short_desc="Support package to sync Digital Ocean public keys for a user"
+maintainer="Noel Cower <ncower@gmail.com>"
+license="ISC"
+homepage="https://github.com/nilium/spiff-packages"
+
+do_install() {
+	vlicense ${FILESDIR}/COPYING
+	vsv do-public-key-sync
+}

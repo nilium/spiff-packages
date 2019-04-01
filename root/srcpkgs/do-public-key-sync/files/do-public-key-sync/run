@@ -1,0 +1,20 @@
+#!/bin/bash
+if [ -r conf ]; then
+  . ./conf
+fi
+export KEY_USER
+
+sv:update() {
+  chpst -u "${KEY_USER:-void}" ./update "$@"
+  if [ $? = 2 ]; then
+    sleep 120
+  fi
+  touch timefile
+}
+export -f sv:update
+
+exec snooze -ttimefile           \
+    -H"${INTERVAL_HOUR:-*}"      \
+    -M"${INTERVAL_MINUTE:-*}"    \
+    -S"${INTERVAL_SECOND:-0}"    \
+  /bin/bash -c 'sv:update "$@"' "$USER" "$PUBLIC_KEYS_URL"
