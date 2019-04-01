@@ -1,5 +1,12 @@
 #!/bin/sh
 
+if [ -r conf ]; then
+  . ./conf
+  export PKGDIR PKGKEY PKGSIGNATURE
+fi
+
+# TODO: Add clean-up hook functions via conf?
+
 NOTE() {
   echo '#' "$@" 1>&2
 }
@@ -57,7 +64,7 @@ fetch_repo() {
     case "${opt}" in
     u) upstream="${OPTARG}";;
     P) pull=0;;
-    *) ERR "fetch_repo: unrecognized argument: ${opt}";;
+    :) ERR "fetch_repo: unrecognized argument: ${opt}";;
     esac
   done
   shift $((OPTIND-1))
@@ -198,6 +205,86 @@ ws_cmd_sh() {
   return $ec
 }
 
+ws_usage_export() {
+  cat 1>&2 <<EOF
+Usage: $* <pkg...>
+
+Copy one or more packages to the set PKGDIR.
+
+If PKGSIGNATURE and PKGKEY are also set to the signature and path to the
+private key, respectively, then the package and repository metadata are
+also signed.
+EOF
+}
+
+ws_cmd_export() {
+  if [ -z "$PKGDIR" ]; then
+    ERR "PKGDIR must be set before running export"
+  fi
+
+  local arch=
+  while getopts ":a:" opt; do
+    case "$opt" in
+    a) arch="${OPTARG}";;
+    :) ERR "export: unrecognized argument: ${opt}";;
+    esac
+  done
+  shift $((OPTIND-1))
+
+  create_binds
+  trap 'clean_binds' EXIT
+
+  (
+  cd "$ws_dir"
+
+  if [ -z "$arch" ]; then
+    arch="$(./xbps-src show-var XBPS_ARCH)"
+  fi
+
+  local pkgname=
+  local version=
+  local revision=
+
+  for pkg; do
+    (
+    eval "$(
+      ./xbps-src show "$pkg" |
+      awk -F"\t" '
+        ($1 ~ /^(pkgname|version|revision):$/) {
+          sub(/:$/, "", $1)
+          printf "%s=%s\n", $1, $2
+        }'
+      )"
+
+    pkgfile="${pkgname}-${version}_${revision}.${arch}.xbps"
+    pkgpath="hostdir/binpkgs/$pkgfile"
+    if [ ! -r "$pkgpath" ]; then
+      NOTE "Package missing: $pkgpath; building..."
+      if ! ./xbps-src pkg "$pkg"; then
+        ERR "Failed to build package: $pkg"
+      fi
+    fi
+    NOTE "Copying $pkgfile"
+    if ! install -m644 "$pkgpath" "$PKGDIR/"; then
+      ERR "Unable to copy package: $pkgfile"
+    fi
+    if ! (
+      set -e
+      cd "$PKGDIR"
+      xbps-rindex -v -a "$pkgfile"
+      if [ -n "$PKGKEY" ] && [ -n "$PKGSIGNATURE" ]; then
+        NOTE "Signing package: $pkgfile"
+        xbps-rindex -v --signedby "$PKGSIGNATURE" --privkey "$PKGKEY" --sign-pkg "$pkgfile"
+        xbps-rindex -v --signedby "$PKGSIGNATURE" --privkey "$PKGKEY" --sign .
+      fi
+    ); then
+      ERR "Unable to index package: $pkgfile"
+    fi
+    )
+  done
+  )
+}
+
 # check_help CMD ARG1
 #
 # Checks if ARG1 is -h, -help, or --help and prints CMD's usage if it
@@ -218,6 +305,7 @@ Usage: $1 <cmd> [options]
 Commands
   help       Print help text for this program or a command.
   init       Initialize workspace.
+  export     Export a package to the local repository.
   src        Run xbps-src with package templates bind-mounted.
   run        Run an arbitrary command in the void-packages workspace.
   sh         Run an shell string in the void-packages workspace.
