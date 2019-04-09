@@ -1,0 +1,39 @@
+# Template file for 'libdispatch'
+pkgname=libdispatch
+version=5.0
+revision=1
+wrksrc="swift-corelibs-libdispatch-swift-${version}-RELEASE"
+build_style=cmake
+configure_args="-DENABLE_TESTING=OFF"
+hostmakedepends="clang pkg-config"
+makedepends="libbsd-devel"
+short_desc="Apple's library for concurrency on multicore hardware"
+maintainer="Noel Cower <ncower@gmail.com>"
+license="Apache-2"
+homepage="https://apple.github.io/swift-corelibs-libdispatch/"
+distfiles="https://github.com/apple/swift-corelibs-libdispatch/archive/swift-${version}-RELEASE.tar.gz"
+checksum="b10e9cb639680e5847f0f8f44254c2848563d67ec00aae7310d5dcfffa6d1cf6"
+nopie=yes
+
+case "$XBPS_TARGET_MACHINE" in
+	*-musl) makedepends+=" musl-devel";;
+	*) makedepends+=" glibc-devel";;
+esac
+
+pre_configure() {
+	export CC=clang
+	export CXX=clang++
+}
+
+post_install() {
+	vlicense LICENSE
+}
+
+libdispatch-devel_package() {
+	short_desc+=" - development files"
+	depends="${sourcepkg}>=${version}_${revision}"
+	pkg_install() {
+		vmove usr/share/man/man3
+		vmove usr/include
+	}
+}
