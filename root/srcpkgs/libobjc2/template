@@ -1,0 +1,39 @@
+# Template file for 'libobjc2'
+pkgname=libobjc2
+version=1.9
+revision=1
+build_style=cmake
+configure_args="-DTESTS=FALSE"
+hostmakedepends="clang pkg-config"
+makedepends="libstdc++-devel libdispatch-devel"
+short_desc="Apple's library for concurrency on multicore hardware"
+maintainer="Noel Cower <ncower@gmail.com>"
+license="MIT"
+homepage="https://github.com/gnustep/libobjc2"
+distfiles="https://github.com/gnustep/libobjc2/archive/${version}.tar.gz"
+checksum="433ed4bbb2395a2666771fe71624275d3010c5d34e56c81ba81e51a6aa646415"
+nopie=yes
+
+case "$XBPS_TARGET_MACHINE" in
+	*-musl) makedepends+=" musl-devel";;
+	*) makedepends+=" glibc-devel";;
+esac
+
+pre_configure() {
+	export CC=clang
+	export CXX=clang++
+
+	vsed -i CMakeLists.txt -e 's/-D_BSD_SOURCE=1/-D_DEFAULT_SOURCE=1/'
+}
+
+post_install() {
+	vlicense COPYING
+}
+
+libobjc2_package() {
+	short_desc+=" - development files"
+	depends="${sourcepkg}>=${version}_${revision}"
+	pkg_install() {
+		vmove usr/include
+	}
+}
