@@ -1,0 +1,15 @@
+# Template file for 'caddy-pm'
+pkgname=caddy-pm
+version=0.2.0
+revision=1
+build_style=meta
+depends="retrap caddy"
+short_desc="Alternative service for Caddy using a subreaper"
+maintainer="Noel Cower <ncower@gmail.com>"
+license="ISC"
+homepage="https://github.com/nilium/spiff-packages"
+
+do_install() {
+	vlicense ${FILESDIR}/COPYING
+	vsv caddy-pm
+}

@@ -1,0 +1,7 @@
+#!/bin/sh
+set --
+CADDYPATH=/var/lib/caddy
+[ -r conf ] && . ./conf
+export CADDYPATH
+cd /etc/caddy
+exec chpst -o "${CADDY_NOFILE:-8192}" -u caddy retrap -r HUP:USR1 INT:TERM -- caddy "$@"
