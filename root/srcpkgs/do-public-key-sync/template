@@ -1,6 +1,6 @@
 # Template file for 'do-public-key-sync'
 pkgname=do-public-key-sync
-version=0.1.0
+version=0.1.1
 revision=1
 build_style=meta
 depends="snooze coreutils diffutils"
