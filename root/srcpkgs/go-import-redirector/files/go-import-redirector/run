@@ -1,0 +1,9 @@
+#!/bin/sh
+set --
+[ -r conf ] && . ./conf
+exec chpst -u _goimportredirector go-import-redirector \
+        ${GIR_GRACE:+-grace "${GIR_GRACE}"} \
+        ${GIR_LISTEN:+-listen "${GIR_LISTEN}"} \
+        ${GIR_VCS:+-vcs "${GIR_VCS}"} \
+        "$@" \
+        ${GIR_REDIRECTS}

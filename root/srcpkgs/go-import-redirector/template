@@ -1,0 +1,20 @@
+# Template file for 'go-import-redirector'
+pkgname=go-import-redirector
+version=0.1.0
+revision=4
+build_style=go
+go_import_path=go.spiff.io/go-import-redirector
+hostmakedepends="git"
+short_desc="HTTP server for a custom 'go get' domain"
+maintainer="Noel Cower <ncower@gmail.com>"
+license="BSD-3-Clause"
+homepage="https://github.com/nilium/go-import-redirector"
+distfiles="https://github.com/nilium/go-import-redirector/archive/v${version}.tar.gz"
+checksum=d904c2d424d7ba1216ee178aecfd2e3066d272ccfbea06d081eacff37f842ff8
+system_accounts="_goimportredirector"
+_goimportredirector_pgroup="nogroup"
+
+post_install() {
+	vlicense LICENSE
+	vsv go-import-redirector
+}
