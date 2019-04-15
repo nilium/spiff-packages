@@ -1,0 +1,10 @@
+#!/bin/sh
+[ -r conf ] && . ./conf
+: "${GITEA_USER:=git}"
+: "${GITEA_GROUP:=git}"
+: "${GITEA_WORK_DIR:=/var/lib/git}"
+: "${GITEA_CONFIG_FILE:=/etc/gitea.conf}"
+cd "$GITEA_WORK_DIR"
+export USER="$GITEA_USER" HOME="$GITEA_WORK_DIR" GITEA_WORK_DIR
+exec 2>&1
+exec chpst -u "$GITEA_USER:$GITEA_GROUP" gitea web --config "$GITEA_CONFIG_FILE"

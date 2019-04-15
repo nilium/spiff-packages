@@ -1,0 +1,2 @@
+#!/bin/sh
+exec logger -t gitea -p daemon.info

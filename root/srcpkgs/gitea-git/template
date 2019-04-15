@@ -1,0 +1,20 @@
+# Template file for 'gitea-git'
+pkgname=gitea-git
+version=0.1.0
+revision=4
+build_style=meta
+depends="gitea"
+short_desc="Alternative service for Gitea"
+maintainer="Noel Cower <ncower@gmail.com>"
+license="ISC"
+homepage="https://github.com/nilium/spiff-packages"
+system_accounts="git"
+git_homedir="/var/lib/git"
+git_groups="_gitea"
+make_dirs="/var/lib/git 0750 git git
+ /var/log/gitea-git 0755 git root"
+
+do_install() {
+	vlicense ${FILESDIR}/COPYING
+	vsv gitea-git
+}
