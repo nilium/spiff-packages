@@ -1,6 +1,6 @@
 # Template file for 'caddy-pm'
 pkgname=caddy-pm
-version=0.2.0
+version=0.2.1
 revision=1
 build_style=meta
 depends="retrap caddy"
