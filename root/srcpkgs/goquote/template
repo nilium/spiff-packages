@@ -1,0 +1,16 @@
+# Template file for 'goquote'
+pkgname=goquote
+version=0.1.0
+revision=1
+build_style=go
+go_import_path=go.spiff.io/${pkgname}
+short_desc="Escape and unescape URL query and path strings"
+maintainer="Noel Cower <ncower@gmail.com>"
+license="BSD-2-Clause"
+homepage="https://github.com/nilium/${pkgname}"
+distfiles="${homepage}/archive/v${version}.tar.gz"
+checksum="8b9a95e0e526483f7110df20fe9dfd4a97d2fbda9edd1a2804e42a361d4a1a4d"
+
+post_install() {
+	vlicense COPYING
+}
