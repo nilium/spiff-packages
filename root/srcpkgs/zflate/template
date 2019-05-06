@@ -1,0 +1,16 @@
+# Template file for 'zflate'
+pkgname=zflate
+version=0.1.1
+revision=1
+build_style=go
+go_import_path=go.spiff.io/${pkgname}
+short_desc="Compress and decompress streams"
+maintainer="Noel Cower <ncower@gmail.com>"
+license="ISC"
+homepage="https://github.com/nilium/${pkgname}"
+distfiles="${homepage}/archive/v${version}.tar.gz"
+checksum="062f3627f78e3d39e911e137690c4f48edbe91115af224e80c43c1c4798db697"
+
+post_install() {
+	vlicense COPYING
+}
