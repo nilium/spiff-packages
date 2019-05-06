@@ -1,0 +1,16 @@
+# Template file for 'urltool'
+pkgname=urltool
+version=0.1.0
+revision=1
+build_style=go
+go_import_path=go.spiff.io/${pkgname}
+short_desc="CLI tool to modify URLs"
+maintainer="Noel Cower <ncower@gmail.com>"
+license="ISC"
+homepage="https://github.com/nilium/${pkgname}"
+distfiles="${homepage}/archive/v${version}.tar.gz"
+checksum="fdead72c978247fb6735589502d93b3f76d107fbc75b9fb22473cae393396290"
+
+post_install() {
+	vlicense COPYING
+}
