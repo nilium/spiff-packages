@@ -1,0 +1,22 @@
+# Template file for 'go-fex'
+pkgname=go-fex
+version=0.1.0
+revision=1
+build_style=go
+go_import_path=go.spiff.io/${pkgname}
+go_package=${go_import_path}/cmd/fex
+short_desc="Flexible field/token extraction with Unicode and RE2 support"
+maintainer="Noel Cower <ncower@gmail.com>"
+license="Apache-2.0"
+homepage="https://github.com/nilium/${pkgname}"
+distfiles="${homepage}/archive/v${version}.tar.gz"
+checksum="001f2e8de9944c8a7cec0c45a5f6b221d4c7a7e49d2bf24af7d3125bb9d17b89"
+conflicts="fex"
+
+do_build() {
+	go install -x -ldflags "${go_ldflags} -X main.version=${version}_${revision}" ${go_package}
+}
+
+post_install() {
+	vlicense LICENSE
+}
