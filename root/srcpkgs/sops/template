@@ -1,0 +1,13 @@
+# Template file for 'sops'
+pkgname=sops
+version=3.3.0
+revision=1
+build_style=go
+go_import_path=go.mozilla.org/${pkgname}
+go_package=${go_import_path}/cmd/${pkgname}
+short_desc="Escape and unescape URL query and path strings"
+maintainer="Noel Cower <ncower@gmail.com>"
+license="MPL-2.0"
+homepage="https://github.com/mozilla/${pkgname}"
+distfiles="${homepage}/archive/${version}.tar.gz"
+checksum="ba9cf4dffeba97ae738a71b1f647780ef71e01466e1fe5a9b61bca5e89d25a19"
