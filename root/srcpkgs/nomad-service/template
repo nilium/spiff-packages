@@ -1,0 +1,22 @@
+# Template file for 'nomad-service'
+pkgname=nomad-service
+version=0.1.0
+revision=2
+build_style=meta
+depends="nomad"
+short_desc="Service for Nomad"
+maintainer="Noel Cower <ncower@gmail.com>"
+license="ISC"
+homepage="https://github.com/nilium/spiff-packages"
+system_groups="nomad"
+system_accounts="nomad"
+
+nomad_homedir="/var/lib/nomad"
+nomad_groups="nomad"
+nomad_descr="Nomad service user"
+make_dirs="/etc/nomad.d 0700 nomad nomad"
+
+do_install() {
+	vlicense ${FILESDIR}/COPYING
+	vsv nomad
+}

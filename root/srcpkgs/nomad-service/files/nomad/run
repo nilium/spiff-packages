@@ -1,0 +1,7 @@
+#!/bin/sh
+set -e --
+[ -r ./conf ] && . ./conf
+: ${NOMAD_CONFIG_DIR=/etc/nomad.d}
+
+exec chpst -u "${NOMAD_USER:-root}:${NOMAD_GROUP:-root}" \
+  nomad agent -config "${NOMAD_CONFIG_DIR}" $NOMAD_OPTIONS "$@"
