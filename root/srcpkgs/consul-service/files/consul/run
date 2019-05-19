@@ -1,0 +1,7 @@
+#!/bin/sh
+set -e --
+[ -r ./conf ] && . ./conf
+: ${CONSUL_CONFIG_DIR=/etc/consul.d}
+
+exec chpst -u consul:consul \
+  consul agent -config-dir "${CONSUL_CONFIG_DIR}" $CONSUL_OPTIONS "$@"

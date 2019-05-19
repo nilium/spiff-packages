@@ -1,0 +1,22 @@
+# Template file for 'consul-service'
+pkgname=consul-service
+version=0.1.0
+revision=2
+build_style=meta
+depends="consul"
+short_desc="Service for Consul"
+maintainer="Noel Cower <ncower@gmail.com>"
+license="ISC"
+homepage="https://github.com/nilium/spiff-packages"
+system_groups="consul"
+system_accounts="consul"
+
+consul_homedir="/var/lib/consul"
+consul_groups="consul"
+consul_descr="Consul service user"
+make_dirs="/etc/consul.d 0700 consul consul"
+
+do_install() {
+	vlicense ${FILESDIR}/COPYING
+	vsv consul
+}
