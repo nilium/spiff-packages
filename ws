@@ -223,6 +223,7 @@ ws_cmd_export() {
   fi
 
   local arch=
+  local targetarch=
   while getopts ":a:" opt; do
     case "$opt" in
     a) arch="${OPTARG}";;
@@ -250,17 +251,21 @@ ws_cmd_export() {
     eval "$(
       ./xbps-src show "$pkg" |
       awk -F"\t" '
-        ($1 ~ /^(pkgname|version|revision):$/) {
-          sub(/:$/, "", $1)
-          printf "%s=%s\n", $1, $2
+        ($1 ~ /^(pkgname|version|revision|archs):$/) {
+          sub(/:[ \t]*/, "=", $0)
+          print "pkg_" $0
         }'
       )"
+    if [ "$pkg_archs" = noarch ]; then
+      targetarch="${targetarch:-noarch}"
+    fi
+    targetarch="${targetarch:-$arch}"
 
-    pkgfile="${pkgname}-${version}_${revision}.${arch}.xbps"
+    pkgfile="${pkg_pkgname}-${pkg_version}_${pkg_revision}.${targetarch}.xbps"
     pkgpath="hostdir/binpkgs/$pkgfile"
     if [ ! -r "$pkgpath" ]; then
       NOTE "Package missing: $pkgpath; building..."
-      if ! ./xbps-src pkg "$pkg"; then
+      if ! ./xbps-src pkg -a "$arch" "$pkg"; then
         ERR "Failed to build package: $pkg"
       fi
     fi
