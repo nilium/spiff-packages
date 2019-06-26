@@ -1,7 +1,8 @@
 # Template file for 'do-public-key-sync'
 pkgname=do-public-key-sync
 version=0.1.1
-revision=1
+revision=2
+archs="noarch"
 build_style=meta
 depends="snooze coreutils diffutils"
 short_desc="Support package to sync Digital Ocean public keys for a user"
