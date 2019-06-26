@@ -1,7 +1,8 @@
 # Template file for 'caddy-pm'
 pkgname=caddy-pm
 version=0.2.1
-revision=1
+revision=2
+archs="noarch"
 build_style=meta
 depends="retrap caddy"
 short_desc="Alternative service for Caddy using a subreaper"
