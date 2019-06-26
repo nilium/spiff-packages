@@ -1,7 +1,8 @@
 # Template file for 'gitea-git'
 pkgname=gitea-git
 version=0.1.1
-revision=1
+revision=2
+archs="noarch"
 build_style=meta
 depends="gitea"
 short_desc="Alternative service for Gitea"
