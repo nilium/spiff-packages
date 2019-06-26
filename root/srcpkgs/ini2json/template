@@ -1,0 +1,17 @@
+# Template file for 'ini2json'
+pkgname=ini2json
+version=0.1.0
+revision=1
+build_style=go
+go_import_path=go.spiff.io/${pkgname}
+hostmakedepends="git"
+short_desc="Convert INI files to JSON"
+maintainer="Noel Cower <ncower@gmail.com>"
+license="ISC"
+homepage="https://github.com/nilium/${pkgname}"
+distfiles="${homepage}/archive/v${version}.tar.gz"
+checksum="63080149802cd90ce5fd04e99a0b76cd3dbbe11d03b8cdc0dbf4cd56037bf0c8"
+
+post_install() {
+	vlicense COPYING
+}
