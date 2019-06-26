@@ -1,7 +1,8 @@
 # Template file for 'consul-service'
 pkgname=consul-service
 version=0.1.0
-revision=2
+revision=3
+archs="noarch"
 build_style=meta
 depends="consul"
 short_desc="Service for Consul"
