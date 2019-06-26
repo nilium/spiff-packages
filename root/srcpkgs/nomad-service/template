@@ -1,7 +1,8 @@
 # Template file for 'nomad-service'
 pkgname=nomad-service
 version=0.1.0
-revision=2
+revision=3
+archs="noarch"
 build_style=meta
 depends="nomad"
 short_desc="Service for Nomad"
